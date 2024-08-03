@@ -14,7 +14,8 @@ int main() {
 	}
 
 	mysql_query(mysql, "update departments set counter=0");
-	MYSQL_RES *clear_counter = mysql_store_result(mysql);
+	//MYSQL_RES *clear_counter = mysql_store_result(mysql);
+	mysql_query(mysql, "update candidates set department=NULL");
 
 
 	mysql_query(mysql, "SELECT * FROM inbox order by points desc, id asc, priority asc");

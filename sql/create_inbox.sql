@@ -16,3 +16,4 @@ LOAD DATA INFILE '/var/lib/mysql-files/inbox.csv'
 	IGNORE 1 LINES
 ;
 
+UPDATE inbox SET department=SUBSTRING(department, 1, 8);

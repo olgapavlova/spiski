@@ -19,19 +19,13 @@ int main() {
 	mysql_query(mysql, "UPDATE departments SET counter=0");
 	mysql_query(mysql, "UPDATE candidates SET department=NULL");
 
-printf("1\n");
-
 	// Получить список всех заявлений
 	mysql_query(mysql, "SELECT * FROM inbox order by points desc, id asc, priority asc");
 	MYSQL_RES * inbox = mysql_store_result(mysql);
 
-printf("2\n");
-
 	// Обработать список заявлений
 	MYSQL_ROW application;
 	while ((application = mysql_fetch_row(inbox))) {
-
-printf("3\n");
 
 		// Получить запись о кандидате в таблице кандидатов
 		char select_candidate[200] = {0};
@@ -39,17 +33,11 @@ printf("3\n");
 		strcat(select_candidate, application[0]);  // id
 		strcat(select_candidate, "'");
 
-printf("%s\n", select_candidate);
-
 		mysql_query(mysql, select_candidate);
 		MYSQL_RES *candidate_search_result = mysql_store_result(mysql);
 		MYSQL_ROW candidate = mysql_fetch_row(candidate_search_result);
 
-printf("4\n");
-
-		if (!candidate[1]) {  // ещё не распределён
-
-printf("5\n");
+		if (candidate[1] == NULL) {  // ещё не распределён
 
 			// Получить информацию о направлении, указанном в заявлении
 			char select_department[200] = {0};
@@ -61,16 +49,12 @@ printf("5\n");
 			MYSQL_RES *department_search_result = mysql_store_result(mysql);
 			MYSQL_ROW department = mysql_fetch_row(department_search_result);
 
-printf("6\n");
-
 			// Если есть места — зачислить кандидата на направление
 			int department_budget;
-			sscanf(department[1], "%d", &department_budget);
+			sscanf(department[2], "%d", &department_budget);
 
 			int department_counter;
-			sscanf(department[3], "%d", &department_counter);
-
-printf("7\n");
+			sscanf(department[4], "%d", &department_counter);
 
 			if (department_budget > department_counter) {
 				// Увеличиваем счётчик зачисленных на направление (можно обойтись сложным SQL-запросом)
@@ -81,8 +65,6 @@ printf("7\n");
 
 				mysql_query(mysql, increase_counter);
 
-printf("8\n");
-
 				// Записываем кандидата на направление
 				char set_department[200] = {0};
 				strcat(set_department, "UPDATE candidates SET department='");
@@ -92,6 +74,9 @@ printf("8\n");
 				strcat(set_department, "'");
 
 				mysql_query(mysql, set_department);
+
+printf("1 %s\n", set_department);
+
 			}
 
 			mysql_free_result(department_search_result);

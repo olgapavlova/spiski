@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS departments;
 
 CREATE TABLE IF NOT EXISTS departments (
 	id VARCHAR(15) PRIMARY KEY,
-	name VARCHAR(100),
+	name VARCHAR(60),
 	budget INT,
 	inbox INT,
 	counter INT DEFAULT 0

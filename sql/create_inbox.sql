@@ -1,20 +1,18 @@
 USE spiski;
 
-DROP TABLE IF EXISTS departments;
+DROP TABLE IF EXISTS inbox;
 
-CREATE TABLE IF NOT EXISTS departments (
-	id VARCHAR(15) PRIMARY KEY,
-	name VARCHAR(100),
-	budget INT,
-	inbox INT,
-	counter INT DEFAULT 0
+CREATE TABLE IF NOT EXISTS inbox(
+	id VARCHAR(15),
+	points INT,
+	priority INT,
+	department VARCHAR(15)
 ); 
 
-LOAD DATA INFILE '/var/lib/mysql-files/departments.csv'
-	INTO TABLE departments
+LOAD DATA INFILE '/var/lib/mysql-files/inbox.csv'
+	INTO TABLE inbox
 	FIELDS TERMINATED BY ','
 	OPTIONALLY ENCLOSED BY '"'
 	IGNORE 1 LINES
-	(id, name, budget, inbox)
 ;
 

@@ -20,7 +20,7 @@ int main() {
 	mysql_query(mysql, "UPDATE candidates SET department=NULL");
 
 	// Получить список всех заявлений
-	mysql_query(mysql, "SELECT * FROM inbox order by points desc, id asc, priority asc");
+	mysql_query(mysql, "SELECT * FROM inbox ORDER BY points DESC, id ASC, priority ASC");
 	MYSQL_RES * inbox = mysql_store_result(mysql);
 
 	// Обработать список заявлений
@@ -69,18 +69,20 @@ int main() {
 				char set_department[200] = {0};
 				strcat(set_department, "UPDATE candidates SET department='");
 				strcat(set_department, application[3]);
+				strcat(set_department, "', points='");
+				strcat(set_department, application[1]);
+				strcat(set_department, "', priority='");
+				strcat(set_department, application[2]);
 				strcat(set_department, "' WHERE id='");
 				strcat(set_department, application[0]);
 				strcat(set_department, "'");
 
 				mysql_query(mysql, set_department);
-
-printf("1 %s\n", set_department);
-
 			}
 
 			mysql_free_result(department_search_result);
 		}
+
 		mysql_free_result(candidate_search_result);
 	}
 
